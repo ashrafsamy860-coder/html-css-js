@@ -1,0 +1,727 @@
+/* =========================================
+   RESET
+========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   ROOT
+========================================= */
+
+:root {
+  --bg: #111a2d;
+  --header: #10192a;
+  --sidebar: #202d42;
+  --panel: #1e2a3d;
+  --input: #0f182b;
+  --border: #33445d;
+  --blue: #078bd0;
+  --text: #f1f5f9;
+  --muted: #8c9bb0;
+}
+
+
+/* =========================================
+   BODY
+========================================= */
+
+body {
+  width: 100%;
+  min-height: 100vh;
+
+  background: var(--bg);
+
+  color: var(--text);
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+/* =========================================
+   Header
+========================================= */
+
+.header {
+  height: 70px;
+
+  background: var(--header);
+
+  border-bottom: 2px solid #147bd1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 0 28px;
+}
+
+
+/* Brand */
+
+.brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+/* Logo */
+
+.brand-logo {
+  width: 92px;
+  height: 92px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+
+.brand-logo img {
+  width: 50px;
+  height: auto;
+
+  display: block;
+}
+
+
+/* Title */
+
+.brand h1 {
+  color: #b91c1c;
+
+  font-size: 21px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================
+   Model
+========================================= */
+
+.model-control {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+.model-control label {
+  color: #d8dee8;
+
+  font-size: 14px;
+}
+
+
+#modelSelect {
+  width: 150px;
+
+  height: 43px;
+
+  padding: 0 12px;
+
+  font-size: 14px;
+
+  background: #111a2d;
+
+  color: #f8fafc;
+
+  border: 1px solid #46556d;
+
+  border-radius: 6px;
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   Dashboard
+========================================= */
+
+.dashboard {
+  flex: 1;
+
+  display: flex;
+
+  min-height: 0;
+}
+
+
+/* =========================================
+   Sidebar
+========================================= */
+
+.sidebar {
+  width: 280px;
+
+  background: var(--sidebar);
+
+  padding: 27px 24px;
+
+  border-right: 1px solid #2c3b51;
+}
+
+
+.sidebar h2 {
+  color: #aab7c9;
+
+  font-size: 18px;
+
+  margin-bottom: 10px;
+}
+
+
+/* Divider */
+
+.divider {
+  height: 1px;
+
+  background: #3b485b;
+
+  margin-bottom: 22px;
+}
+
+
+/* Labels */
+
+.sidebar > label {
+  display: block;
+
+  color: #b6c0ce;
+
+  font-size: 13px;
+
+  margin-bottom: 8px;
+}
+
+
+/* Select */
+
+.setting-select {
+  width: 100%;
+
+  height: 43px;
+
+  padding: 0 10px;
+
+  margin-bottom: 24px;
+
+  background: #111a2d;
+
+  color: white;
+
+  border: 1px solid #46556d;
+
+  border-radius: 6px;
+
+  outline: none;
+}
+
+
+/* =========================================
+   Temperature
+========================================= */
+
+.temperature-label {
+  margin-bottom: 13px !important;
+}
+
+
+#temperature {
+  width: 100%;
+
+  height: 5px;
+
+  appearance: none;
+
+  -webkit-appearance: none;
+
+  background: linear-gradient(
+    to right,
+    #168be0 0%,
+    #168be0 40%,
+    #eeeeee 40%,
+    #eeeeee 100%
+  );
+
+  border-radius: 10px;
+
+  outline: none;
+
+  margin-bottom: 34px;
+}
+
+
+/* Chrome / Edge */
+
+#temperature::-webkit-slider-thumb {
+  appearance: none;
+
+  -webkit-appearance: none;
+
+  width: 15px;
+
+  height: 15px;
+
+  background: #168be0;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+
+/* Firefox */
+
+#temperature::-moz-range-thumb {
+  width: 15px;
+
+  height: 15px;
+
+  background: #168be0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   Options
+========================================= */
+
+.options-box {
+  background: #101a2d;
+
+  border-radius: 5px;
+
+  padding: 13px 12px;
+}
+
+
+.checkbox-label {
+  display: flex !important;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #dce3ed !important;
+
+  font-size: 14px !important;
+
+  margin-bottom: 12px !important;
+
+  cursor: pointer;
+}
+
+
+.checkbox-label:last-child {
+  margin-bottom: 0 !important;
+}
+
+
+.checkbox-label input {
+  width: 14px;
+
+  height: 14px;
+
+  accent-color: #168be0;
+}
+
+
+/* =========================================
+   Main Content
+========================================= */
+
+.main-content {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 24px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+
+/* =========================================
+   Conversation
+========================================= */
+
+.conversation {
+  flex: 1;
+
+  min-height: 0;
+
+  background: var(--panel);
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  padding: 20px;
+
+  overflow-y: auto;
+}
+
+
+.output-container {
+  min-height: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: stretch;
+
+  justify-content: flex-start;
+}
+
+
+.placeholder {
+  margin-top: 38px;
+
+  color: #8c9bb0;
+
+  font-size: 16px;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   Chat Messages
+========================================= */
+
+.message-bubble {
+  width: fit-content;
+
+  max-width: 75%;
+
+  margin-bottom: 15px;
+
+  padding: 14px 16px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  word-wrap: break-word;
+}
+
+
+/* =========================================
+   User Message
+========================================= */
+
+.user-message {
+  margin-left: auto;
+
+  background: #078bd0;
+
+  color: white;
+
+  border-bottom-right-radius: 3px;
+}
+
+
+/* =========================================
+   AI Message
+========================================= */
+
+.ai-message {
+  margin-right: auto;
+
+  background: #101a2d;
+
+  border: 1px solid #33445d;
+
+  color: #f1f5f9;
+
+  border-bottom-left-radius: 3px;
+}
+
+
+/* Message Text */
+
+.message-bubble p {
+  margin-bottom: 10px;
+
+  white-space: pre-wrap;
+}
+
+
+.message-bubble p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* =========================================
+   Message Buttons
+========================================= */
+
+.message-bubble button {
+  border: none;
+
+  padding: 5px 9px;
+
+  margin-right: 6px;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  font-size: 12px;
+}
+
+
+/* Edit */
+
+.user-message button:first-of-type {
+  background: #ffffff;
+
+  color: #078bd0;
+}
+
+
+/* Delete */
+
+.user-message button:last-of-type {
+  background: #b91c1c;
+
+  color: white;
+}
+
+
+/* =========================================
+   Error Message
+========================================= */
+
+.error-message {
+  border-color: #b91c1c;
+
+  color: #ffb4b4;
+}
+
+
+/* =========================================
+   Prompt
+========================================= */
+
+.prompt-form {
+  width: 100%;
+
+  min-height: 62px;
+
+  display: flex;
+
+  gap: 13px;
+}
+
+
+#inputText {
+  flex: 1;
+
+  min-height: 62px;
+
+  resize: none;
+
+  padding: 18px;
+
+  background: var(--input);
+
+  color: white;
+
+  border: 1px solid var(--border);
+
+  border-radius: 7px;
+
+  outline: none;
+
+  font-family: inherit;
+
+  font-size: 14px;
+}
+
+
+#inputText::placeholder {
+  color: #69778d;
+}
+
+
+#inputText:focus {
+  border-color: #147bd1;
+}
+
+
+/* =========================================
+   Send Button
+========================================= */
+
+#submitButton {
+  width: 96px;
+
+  height: 62px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: var(--blue);
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+#submitButton:hover {
+  background: #087db9;
+
+  transform: translateY(-1px);
+}
+
+
+#submitButton:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================
+   Footer
+========================================= */
+
+.footer {
+  height: 42px;
+
+  background: #1b273b;
+
+  border-top: 1px solid #2c3b51;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+.footer p {
+  color: #718096;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   Responsive
+========================================= */
+
+@media (max-width: 800px) {
+
+  .sidebar {
+    width: 230px;
+
+    padding: 22px 16px;
+  }
+
+
+  .header {
+    padding: 0 16px;
+  }
+
+
+  .main-content {
+    padding: 16px;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .header {
+    height: auto;
+
+    min-height: 70px;
+
+    gap: 15px;
+
+    padding: 12px 16px;
+
+    flex-wrap: wrap;
+  }
+
+
+  .model-control {
+    width: 100%;
+
+    justify-content: flex-end;
+  }
+
+
+  .dashboard {
+    flex-direction: column;
+  }
+
+
+  .sidebar {
+    width: 100%;
+
+    border-right: none;
+
+    border-bottom: 1px solid #2c3b51;
+  }
+
+
+  .conversation {
+    min-height: 450px;
+  }
+
+
+  .message-bubble {
+    max-width: 90%;
+  }
+
+}

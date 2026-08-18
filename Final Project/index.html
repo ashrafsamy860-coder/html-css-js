@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova AI</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <header class="header">
+    <button id="sidebarToggle" class="sidebar-toggle">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAMAAABC4vDmAAAAaVBMVEUCAQACAAD///8AAACqqans7Ozc3Nz19fX7+/vX19fp6env7+/4+PhtbW2tra3f39/Q0NCXl5egoKCFhYWPj48ODg66urpmZmYyMjJ9fX3Jyck5OTgoKCdERERJSUkaGhpVVVUhISF2dXUZz3qiAAAEwElEQVR4nO2Y6ZKjOgxGOxFZCGENSwidQPL+Dzk2trwQ06NZqu70LX3502AsS8eSDP3x8U9qs/L71YG/ZmjzXxNZE5OiiklRxaSoYlJUMSmqmBRVTIoqJkUVk6KKSVHFpL61ePuoYlJUMSmqmBRVTIoqJkUVk6KKSVHFpKhiUlQxKaqY1LcWbx9VTIoqJkUVk6Lqf0ZqAwB/icyb6d8KEBz9JhD4OSm7hu8zBAbkxWdaV1kWlZfJDK2ZUEzdoZDRAClo0uxWtFV39SMHmG75XihvGxwAuF7iw3GrdE7arpHG4R7NqvpP8Elt4NpXciirnjAb/bzc8jyP6weEeJnYM73GTsxz3IfxpAf2jYky2m19FS8xB8YCH737AKBL9Eg124YOjR7rMCsF5GpXOLxm9/XAJ96OP0AlU3ravus2gHgW6cWjw+oDHujTfrYM96OdWMI6qcFdIbLue07NnC4Bl4ROd4GwwquLCxtavN3NJpqbM+94DaFSQDyntu0n4MAT7xWSlLOusJfsDvZqJzK+wQ1MBpsrMDnBSpO1t9ateWMVJCWwPLX/8DyjU3Myd/aRMn3cpz4yfp0EqoezPpo2nu7GGdQz2XrqA6gUkLv/4HbXqbqAJy56E2HCYNJ+wppuanwikjWABh4YvwWTqsozm6l1fi4rEMNZOrU9d6pQRozrJgsME6p46hYjO1CqvToNolmcnMdVRp29Ow5rVBZobHM4hnt1x0hk+W5g3FmbAHrJk9tehFf6kV6wNGv2KoFMrzlc58oz9tqxR8QdhEmhU8cUoHQisH2qlU7pv2svNONrJp4HLK29AjPhyqUqXiyUc2P3Og83K1shIkCY9JbtRXsfc8cp3c2O06I5ahqxLIUB91t6AbDXV0UD3joXQRX8nvq2fY5TwtKkQ88f0ISd8o/WCJ2SFwj6dBXrvtDuNG8exPoybiR4TNHDAKHtcyKYKWMZpyZUd/vK8Pa1am5sZ5i8j9QQOiyKc7xUVYWoigUqFavJz1p1glGn+znDnMikUxpb4ic6Tu5lvMIWniKXBotGUpNnFhprneahp8I7KSwghOAEZZ36eUtQt7LtUi8FCotgN9hy13f800ZF6zql43+9ObWx27F/BJunPt2XR7bcHYEwRYSlf/5hzEtSxgOTLjbdzZJu7olj5jU9Ov+Y0WEu40kGdb6gvTx0rMt+vyDlOmXe5YbcmTRz8A/kQ+IcyIktSbtPaNOfKhJon+y0zOuOPZgRy8UacN78RuecUkfsV68uTj0OjreqN4qu45w3joy9ykGlSDlDzuswNDZnS/jqJa/1Og24ryeHTp032GW2d/eFGxrsIAeB2idljNTu1goXer2FOZJYex32PtecvTqoZDHVfH75PckmCb5wG1J9HksVdWNySsf8TNv9vigtibUPB7/JwyOK81Ne1IoLNKX6rBDX/gri7eg1f1VEGa5hQ1v55gndX/nECs/TCNe/qpbfX4ZU4Pf1gJuqq8+D8wXySyv8gf65z/Y/f57/FcSkmBSToopJfWvx9lHFpKhiUlQxKaqYFFVMiiomRRWToopJUcWkqGJSVDGpby3ePqqYFFVMiiomRRWToopJUcWkqGJSVDEpqpgUVUyKKiZF0w+D2UnG0dZmKwAAAABJRU5ErkJggg==" alt="Logo"> 
+    <h1>Nova AI</h1>
+  </header> 
+
+  <div class="container" id="mainContainer">
+    <aside class="sidebar" id="sidebar"> 
+      <button id="newChatBtn" class="new-chat-btn">
+        <i class="fa-solid fa-plus"></i> محادثة جديدة
+      </button> 
+      
+      <div class="history-header">المحادثات السابقة</div>
+      <ul class="chat-history" id="chatHistoryList"></ul>
+      
+      <div class="auth-container">
+        <button id="showLoginBtn" class="action-btn login-action">
+          <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول
+        </button>
+        <div class="divider"><span>أو</span></div>
+        <div class="signup-section">
+          <p class="question-text">ليس لديك حساب؟</p>
+          <button id="showSignupBtn" class="action-btn signup-action">إنشاء حساب جديد</button>
+        </div>
+      </div>
+    </aside> 
+
+    <main class="main"> 
+      <div class="chat-display" id="chatDisplay"></div>
+      <form class="input-form" id="chatForm"> 
+        <textarea id="userInput" class="textarea" placeholder="اكتب رسالتك....." rows="1"></textarea> 
+        <button type="submit" class="send-btn" id="sendBtn">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button> 
+      </form> 
+    </main> 
+  </div>
+
+  <!-- صفحة تسجيل الدخول -->
+  <div class="login-page" id="loginPage">
+    <div class="login-card">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAMAAABC4vDmAAAAaVBMVEUCAQACAAD///8AAACqqans7Ozc3Nz19fX7+/vX19fp6env7+/4+PhtbW2tra3f39/Q0NCXl5egoKCFhYWPj48ODg66urpmZmYyMjJ9fX3Jyck5OTgoKCdERERJSUkaGhpVVVUhISF2dXUZz3qiAAAEwElEQVR4nO2Y6ZKjOgxGOxFZCGENSwidQPL+Dzk2trwQ06NZqu70LX3502AsS8eSDP3x8U9qs/L71YG/ZmjzXxNZE5OiiklRxaSoYlJUMSmqmBRVTIoqJkUVk6KKSVHFpL61ePuoYlJUMSmqmBRVTIoqJkUVk6KKSVHFpKhiUlQxKaqY1LcWbx9VTIoqJkUVk6Lqf0ZqAwB/icyb6d8KEBz9JhD4OSm7hu8zBAbkxWdaV1kWlZfJDK2ZUEzdoZDRAClo0uxWtFV39SMHmG75XihvGxwAuF7iw3GrdE7arpHG4R7NqvpP8Elt4NpXciirnjAb/bzc8jyP6weEeJnYM73GTsxz3IfxpAf2jYky2m19FS8xB8YCH737AKBL9Eg124YOjR7rMCsF5GpXOLxm9/XAJ96OP0AlU3ravus2gHgW6cWjw+oDHujTfrYM96OdWMI6qcFdIbLue07NnC4Bl4ROd4GwwquLCxtavN3NJpqbM+94DaFSQDyntu0n4MAT7xWSlLOusJfsDvZqJzK+wQ1MBpsrMDnBSpO1t9ateWMVJCWwPLX/8DyjU3Myd/aRMn3cpz4yfp0EqoezPpo2nu7GGdQz2XrqA6gUkLv/4HbXqbqAJy56E2HCYNJ+wppuanwikjWABh4YvwWTqsozm6l1fi4rEMNZOrU9d6pQRozrJgsME6p46hYjO1CqvToNolmcnMdVRp29Ow5rVBZobHM4hnt1x0hk+W5g3FmbAHrJk9tehFf6kV6wNGv2KoFMrzlc58oz9tqxR8QdhEmhU8cUoHQisH2qlU7pv2svNONrJp4HLK29AjPhyqUqXiyUc2P3Og83K1shIkCY9JbtRXsfc8cp3c2O06I5ahqxLIUB91t6AbDXV0UD3joXQRX8nvq2fY5TwtKkQ88f0ISd8o/WCJ2SFwj6dBXrvtDuNG8exPoybiR4TNHDAKHtcyKYKWMZpyZUd/vK8Pa1am5sZ5i8j9QQOiyKc7xUVYWoigUqFavJz1p1glGn+znDnMikUxpb4ic6Tu5lvMIWniKXBotGUpNnFhprneahp8I7KSwghOAEZZ36eUtQt7LtUi8FCotgN9hy13f800ZF6zql43+9ObWx27F/BJunPt2XR7bcHYEwRYSlf/5hzEtSxgOTLjbdzZJu7olj5jU9Ov+Y0WEu40kGdb6gvTx0rMt+vyDlOmXe5YbcmTRz8A/kQ+IcyIktSbtPaNOfKhJon+y0zOuOPZgRy8UacN78RuecUkfsV68uTj0OjreqN4qu45w3joy9ykGlSDlDzuswNDZnS/jqJa/1Og24ryeHTp032GW2d/eFGxrsIAeB2idljNTu1goXer2FOZJYex32PtecvTqoZDHVfH75PckmCb5wG1J9HksVdWNySsf8TNv9vigtibUPB7/JwyOK81Ne1IoLNKX6rBDX/gri7eg1f1VEGa5hQ1v55gndX/nECs/TCNe/qpbfX4ZU4Pf1gJuqq8+D8wXySyv8gf65z/Y/f57/FcSkmBSToopJfWvx9lHFpKhiUlQxKaqYFFVMiiomRRWToopJUcWkqGJSVDGpby3ePqqYFFVMiiomRRWToopJUcWkqGJSVDEpqpgUVUyKKiZF0w+D2UnG0dZmKwAAAABJRU5ErkJggg==" alt="Nova AI" class="login-logo">
+      <h2>تسجيل الدخول إلى Nova AI</h2>
+      <form id="loginForm">
+        <div class="login-input-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" class="login-input" placeholder="example@nova.ai" required>
+        </div>
+        <div class="login-input-group">
+          <label>كلمة المرور</label>
+          <input type="password" class="login-input" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="login-submit">دخول</button>
+      </form>
+      <a href="#" class="back-link" id="backToChatFromLogin">
+        <i class="fa-solid fa-arrow-right"></i> العودة للمحادثة
+      </a>
+      <p class="switch-page-text">
+        ليس لديك حساب؟ 
+        <a href="#" id="goToSignup">إنشاء حساب</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- صفحة إنشاء حساب (مصغرة جداً) -->
+  <div class="login-page" id="signupPage">
+    <div class="login-card mini-card">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAMAAABC4vDmAAAAaVBMVEUCAQACAAD///8AAACqqans7Ozc3Nz19fX7+/vX19fp6env7+/4+PhtbW2tra3f39/Q0NCXl5egoKCFhYWPj48ODg66urpmZmYyMjJ9fX3Jyck5OTgoKCdERERJSUkaGhpVVVUhISF2dXUZz3qiAAAEwElEQVR4nO2Y6ZKjOgxGOxFZCGENSwidQPL+Dzk2trwQ06NZqu70LX3502AsS8eSDP3x8U9qs/L71YG/ZmjzXxNZE5OiiklRxaSoYlJUMSmqmBRVTIoqJkUVk6KKSVHFpL61ePuoYlJUMSmqmBRVTIoqJkUVk6KKSVHFpKhiUlQxKaqY1LcWbx9VTIoqJkUVk6Lqf0ZqAwB/icyb6d8KEBz9JhD4OSm7hu8zBAbkxWdaV1kWlZfJDK2ZUEzdoZDRAClo0uxWtFV39SMHmG75XihvGxwAuF7iw3GrdE7arpHG4R7NqvpP8Elt4NpXciirnjAb/bzc8jyP6weEeJnYM73GTsxz3IfxpAf2jYky2m19FS8xB8YCH737AKBL9Eg124YOjR7rMCsF5GpXOLxm9/XAJ96OP0AlU3ravus2gHgW6cWjw+oDHujTfrYM96OdWMI6qcFdIbLue07NnC4Bl4ROd4GwwquLCxtavN3NJpqbM+94DaFSQDyntu0n4MAT7xWSlLOusJfsDvZqJzK+wQ1MBpsrMDnBSpO1t9ateWMVJCWwPLX/8DyjU3Myd/aRMn3cpz4yfp0EqoezPpo2nu7GGdQz2XrqA6gUkLv/4HbXqbqAJy56E2HCYNJ+wppuanwikjWABh4YvwWTqsozm6l1fi4rEMNZOrU9d6pQRozrJgsME6p46hYjO1CqvToNolmcnMdVRp29Ow5rVBZobHM4hnt1x0hk+W5g3FmbAHrJk9tehFf6kV6wNGv2KoFMrzlc58oz9tqxR8QdhEmhU8cUoHQisH2qlU7pv2svNONrJp4HLK29AjPhyqUqXiyUc2P3Og83K1shIkCY9JbtRXsfc8cp3c2O06I5ahqxLIUB91t6AbDXV0UD3joXQRX8nvq2fY5TwtKkQ88f0ISd8o/WCJ2SFwj6dBXrvtDuNG8exPoybiR4TNHDAKHtcyKYKWMZpyZUd/vK8Pa1am5sZ5i8j9QQOiyKc7xUVYWoigUqFavJz1p1glGn+znDnMikUxpb4ic6Tu5lvMIWniKXBotGUpNnFhprneahp8I7KSwghOAEZZ36eUtQt7LtUi8FCotgN9hy13f800ZF6zql43+9ObWx27F/BJunPt2XR7bcHYEwRYSlf/5hzEtSxgOTLjbdzZJu7olj5jU9Ov+Y0WEu40kGdb6gvTx0rMt+vyDlOmXe5YbcmTRz8A/kQ+IcyIktSbtPaNOfKhJon+y0zOuOPZgRy8UacN78RuecUkfsV68uTj0OjreqN4qu45w3joy9ykGlSDlDzuswNDZnS/jqJa/1Og24ryeHTp032GW2d/eFGxrsIAeB2idljNTu1goXer2FOZJYex32PtecvTqoZDHVfH75PckmCb5wG1J9HksVdWNySsf8TNv9vigtibUPB7/JwyOK81Ne1IoLNKX6rBDX/gri7eg1f1VEGa5hQ1v55gndX/nECs/TCNe/qpbfX4ZU4Pf1gJuqq8+D8wXySyv8gf65z/Y/f57/FcSkmBSToopJfWvx9lHFpKhiUlQxKaqYFFVMiiomRRWToopJUcWkqGJSVDGpby3ePqqYFFVMiiomRRWToopJUcWkqGJSVDEpqpgUVUyKKiZF0w+D2UnG0dZmKwAAAABJRU5ErkJggg==" alt="Nova AI" class="login-logo mini-logo">
+      <h2 class="mini-title">إنشاء حساب</h2>
+      <form id="signupForm">
+        <div class="login-input-group mini-group">
+          <label class="mini-label">الاسم</label>
+          <input type="text" class="login-input mini-input" placeholder="محمد أحمد" required>
+        </div>
+        <div class="login-input-group mini-group">
+          <label class="mini-label">البريد</label>
+          <input type="email" class="login-input mini-input" placeholder="example@nova.ai" required>
+        </div>
+        <div class="login-input-group mini-group">
+          <label class="mini-label">كلمة المرور</label>
+          <input type="password" id="signupPassword" class="login-input mini-input" placeholder="••••••••" minlength="6" required>
+        </div>
+        <div class="login-input-group mini-group">
+          <label class="mini-label">تأكيد المرور</label>
+          <input type="password" id="signupConfirmPassword" class="login-input mini-input" placeholder="••••••••" minlength="6" required>
+        </div>
+        <button type="submit" class="login-submit mini-submit">إنشاء</button>
+      </form>
+      <button class="back-button" id="backToChatFromSignup">
+        <i class="fa-solid fa-arrow-right"></i> العودة
+      </button>
+      <p class="switch-page-text mini-switch">
+        لديك حساب؟ 
+        <a href="#" id="goToLogin">دخول</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="main.js"></script> 
+</body> 
+</html>

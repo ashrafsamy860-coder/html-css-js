@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>AI Dashboard</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-logo">
+          <img src="./image/logo.png.png" alt="ITI logo" />
+        </div>
+
+        <h1>AI Dashboard</h1>
+      </div>
+
+      <div class="model-control">
+        <label for="modelSelect"> Model: </label>
+
+        <select id="modelSelect">
+          <option value="kimi">Kimi K2.6</option>
+
+          <option value="gemini">Gemini 3.6 Flash</option>
+
+          <option value="gpt">GPT-5.6</option>
+
+          <option value="claude">Claude 5 Fable</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2>AI Settings</h2>
+
+        <div class="divider"></div>
+
+        <!-- Input Type -->
+        <label for="inputType"> Input Type </label>
+
+        <select id="inputType" class="setting-select">
+          <option value="text">(Text Prompt)</option>
+
+          <option value="image">(Image)</option>
+        </select>
+
+        <!-- Temperature -->
+        <label for="temperature" class="temperature-label">
+          Temperature:
+        </label>
+
+        <input
+          type="range"
+          id="temperature"
+          min="0"
+          max="1"
+          step="0.1"
+          value="0.4"
+        />
+
+        <!-- Options -->
+        <div class="options-box">
+          <label class="checkbox-label">
+            <input type="checkbox" id="highReasoning" />
+
+            <span> High Reasoning </span>
+          </label>
+
+          <label class="checkbox-label">
+            <input type="checkbox" id="webSearch" checked />
+
+            <span> Web Search </span>
+          </label>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <main class="main-content">
+        <!-- Conversation -->
+        <section class="conversation">
+          <div id="outputContainer" class="output-container">
+            <p class="placeholder">
+              Write any thing to start the conversation...
+            </p>
+          </div>
+        </section>
+
+        <!-- Prompt -->
+        <form class="prompt-form" id="promptForm">
+          <textarea
+            id="inputText"
+            placeholder="Your Prompt Here ..."
+            rows="1"
+          ></textarea>
+
+          <button type="submit" id="submitButton">Send</button>
+        </form>
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2026 ITI Summer Training - Any AI Model Make Mistakes</p>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>

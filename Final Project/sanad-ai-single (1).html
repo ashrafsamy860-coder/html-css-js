@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سَنَد — مساعدك الذكي</title>
+<style>
+/* =========================================================
+   سند (Sanad) — Design tokens
+   Palette: deep night-navy + warm amber thread + quiet teal
+   Type: Cairo (display) / Almarai (body) / IBM Plex Mono (code)
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600;800;900&family=Almarai:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #0B1420;
+  --bg-elevated: #0F1D2E;
+  --surface: #16273B;
+  --surface-hover: #1C3049;
+  --border: rgba(243, 239, 228, 0.09);
+  --border-strong: rgba(243, 239, 228, 0.18);
+
+  --text-primary: #F3EFE4;
+  --text-muted: #9FB0C3;
+  --text-faint: #64758C;
+
+  --accent-gold: #E3A75E;
+  --accent-gold-soft: rgba(227, 167, 94, 0.14);
+  --accent-teal: #5FB3A3;
+  --accent-teal-soft: rgba(95, 179, 163, 0.14);
+  --accent-danger: #E07A6B;
+  --accent-danger-soft: rgba(224, 122, 107, 0.14);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --shadow-lift: 0 20px 60px -20px rgba(0, 0, 0, 0.55);
+  --shadow-soft: 0 8px 24px -12px rgba(0, 0, 0, 0.4);
+
+  --font-display: 'Cairo', 'Segoe UI', sans-serif;
+  --font-body: 'Almarai', 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { box-sizing: border-box; }
+html { color-scheme: dark; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(95, 179, 163, 0.08), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(227, 167, 94, 0.07), transparent 55%),
+    var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  direction: rtl;
+  text-align: right;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+p { margin: 0; line-height: 1.8; }
+
+a { color: var(--accent-teal); text-decoration: none; cursor: pointer; }
+a:hover { text-decoration: underline; }
+
+::selection { background: var(--accent-gold-soft); color: var(--text-primary); }
+
+:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- View switching ---------- */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ---------- Auth layout ---------- */
+
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+}
+
+@media (max-width: 900px) {
+  .auth-shell { grid-template-columns: 1fr; }
+  .auth-story { display: none; }
+}
+
+.auth-story {
+  position: relative;
+  background: linear-gradient(165deg, var(--bg-elevated) 0%, #0A1119 100%);
+  border-left: 1px solid var(--border);
+  padding: 64px 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.auth-story::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(227,167,94,0.5) 1px, transparent 1.4px);
+  background-size: 26px 26px;
+  opacity: 0.10;
+  pointer-events: none;
+}
+
+.auth-form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  min-height: 100vh;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-card .eyebrow {
+  color: var(--accent-gold);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.auth-card h1 { font-size: 28px; margin-bottom: 8px; }
+.auth-card .sub { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; display: block; }
+
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-mark { width: 34px; height: 34px; flex-shrink: 0; }
+.brand-lockup .brand { font-size: 20px; color: var(--text-primary); }
+
+.story-quote {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.45;
+  color: var(--text-primary);
+  position: relative;
+  z-index: 1;
+}
+.story-quote span { color: var(--accent-gold); }
+
+.story-foot {
+  position: relative;
+  z-index: 1;
+  color: var(--text-faint);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chain-rule { width: 100%; height: 28px; position: relative; z-index: 1; }
+
+/* ---------- Form elements ---------- */
+
+.field { margin-bottom: 18px; }
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.field input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 13px 14px;
+  border-radius: var(--radius-sm);
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease);
+}
+
+.field input::placeholder { color: var(--text-faint); }
+.field input:hover { border-color: var(--border-strong); }
+.field input:focus { border-color: var(--accent-gold); background: var(--surface-hover); outline: none; }
+.field input.invalid { border-color: var(--accent-danger); }
+
+.field-error {
+  color: var(--accent-danger);
+  font-size: 12.5px;
+  margin-top: 6px;
+  min-height: 16px;
+  display: block;
+}
+
+.field-hint { color: var(--text-faint); font-size: 12px; margin-top: 6px; }
+
+.btn {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 15px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  padding: 13px 20px;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease), filter 0.15s var(--ease), background 0.15s var(--ease);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: linear-gradient(180deg, #EBB56E, var(--accent-gold));
+  color: #1A1206;
+  width: 100%;
+}
+.btn-primary:hover { filter: brightness(1.06); }
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; filter: none; }
+
+.btn-ghost { background: transparent; border-color: var(--border-strong); color: var(--text-primary); }
+.btn-ghost:hover { background: var(--surface); }
+
+.btn-icon {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 10px;
+}
+.btn-icon:hover { color: var(--text-primary); border-color: var(--border-strong); background: var(--surface); }
+
+.form-foot { text-align: center; margin-top: 22px; font-size: 14px; color: var(--text-muted); }
+
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--text-faint); font-size: 12px; margin: 22px 0;
+}
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.toast {
+  position: fixed; top: 20px; left: 50%;
+  transform: translateX(-50%) translateY(-12px);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 700;
+  box-shadow: var(--shadow-lift);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+  z-index: 100;
+}
+.toast.danger { border-color: rgba(224,122,107,0.4); }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+
+.checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-muted); }
+.checkbox-row input { width: 16px; height: 16px; accent-color: var(--accent-gold); }
+
+/* ---------- Chat shell (home) ---------- */
+
+.app-shell { min-height: 100vh; display: grid; grid-template-columns: 280px 1fr; position: relative; }
+
+.sidebar-toggle-btn { display: none; }
+.sidebar-backdrop { display: none; }
+
+@media (max-width: 820px) {
+  .app-shell { grid-template-columns: 1fr; }
+
+  .sidebar {
+    position: fixed; inset: 0 0 0 auto; z-index: 60;
+    width: 280px; max-width: 84vw;
+    transform: translateX(100%);
+    transition: transform 0.24s var(--ease);
+    box-shadow: var(--shadow-lift);
+  }
+  .app-shell.sidebar-open .sidebar { transform: translateX(0); }
+
+  .sidebar-toggle-btn { display: inline-flex; }
+
+  .sidebar-backdrop {
+    display: block; position: fixed; inset: 0; z-index: 55;
+    background: rgba(6, 10, 16, 0.55); backdrop-filter: blur(2px);
+    opacity: 0; pointer-events: none; transition: opacity 0.2s var(--ease);
+  }
+  .app-shell.sidebar-open .sidebar-backdrop { opacity: 1; pointer-events: auto; }
+}
+
+.sidebar {
+  background: var(--bg-elevated);
+  border-left: 1px solid var(--border);
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-top { margin-bottom: 28px; }
+
+.sidebar-section-title {
+  font-size: 11.5px; font-weight: 800; color: var(--text-faint);
+  letter-spacing: 0.05em; margin: 18px 0 10px; padding: 0 6px;
+}
+
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: var(--radius-sm);
+  color: var(--text-muted); font-size: 14px; font-weight: 700;
+  cursor: pointer; border: 1px solid transparent;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+.sidebar-item:hover { background: var(--surface); color: var(--text-primary); }
+.sidebar-item.active { background: var(--accent-gold-soft); color: var(--accent-gold); }
+
+.sidebar-bottom { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); }
+
+.user-pill { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: var(--radius-sm); }
+
+.user-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-teal));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 800; color: #10151F;
+  font-size: 14px; flex-shrink: 0;
+}
+
+.user-meta { flex: 1; min-width: 0; }
+.user-meta .name { font-size: 13.5px; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-meta .email { font-size: 11.5px; color: var(--text-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.guest-pill {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 12px; border-radius: var(--radius-sm);
+  background: var(--surface); border: 1px solid var(--border);
+}
+.guest-pill-text .name { font-size: 13.5px; font-weight: 800; color: var(--text-primary); }
+.guest-pill-text .email { font-size: 11.5px; color: var(--text-faint); margin-top: 2px; }
+.guest-pill .btn { padding: 8px 14px; font-size: 12.5px; width: auto; white-space: nowrap; }
+
+.chat-main { display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh; position: relative; }
+
+.chat-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 26px; border-bottom: 1px solid var(--border);
+  background: rgba(11, 20, 32, 0.7); backdrop-filter: blur(10px);
+  position: sticky; top: 0; z-index: 5;
+}
+
+.chat-topbar .model-tag { font-size: 12px; color: var(--text-faint); font-family: var(--font-mono); }
+
+.sidebar-toggle-btn {
+  align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: var(--radius-sm);
+  background: transparent; border: 1px solid var(--border-strong); color: var(--text-primary);
+  cursor: pointer; margin-inline-end: 12px; flex-shrink: 0;
+}
+.sidebar-toggle-btn:hover { background: var(--surface); }
+
+.chat-scroll { overflow-y: auto; padding: 32px clamp(16px, 6vw, 120px); position: relative; height: calc(100vh - 158px); }
+
+.chat-thread {
+  position: absolute; top: 0; bottom: 0;
+  right: calc(clamp(16px, 6vw, 120px) + 19px);
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--border-strong) 4%, var(--border-strong) 96%, transparent);
+  pointer-events: none;
+}
+@media (max-width: 640px) { .chat-thread { display: none; } }
+
+.msg-row { display: flex; gap: 14px; margin-bottom: 26px; position: relative; animation: rise 0.35s var(--ease); }
+
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.msg-row.user { flex-direction: row-reverse; }
+
+.msg-node {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 13px; z-index: 1;
+}
+.msg-node.assistant { background: var(--bg-elevated); border: 1.5px solid var(--accent-gold); color: var(--accent-gold); }
+.msg-node.user { background: linear-gradient(135deg, var(--accent-teal), #3E7F73); color: #08201C; }
+
+.msg-bubble {
+  max-width: 72%; padding: 14px 17px; border-radius: var(--radius-md);
+  font-size: 15px; line-height: 1.85; white-space: pre-wrap; word-wrap: break-word;
+}
+
+.msg-row.assistant .msg-bubble { background: var(--surface); border: 1px solid var(--border); border-top-right-radius: 4px; }
+.msg-row.user .msg-bubble { background: var(--accent-teal-soft); border: 1px solid rgba(95, 179, 163, 0.3); border-top-left-radius: 4px; }
+
+.msg-bubble code { font-family: var(--font-mono); background: rgba(0,0,0,0.25); padding: 2px 6px; border-radius: 5px; font-size: 13px; }
+
+.msg-meta { font-size: 11px; color: var(--text-faint); margin-top: 6px; }
+
+.typing-dots { display: inline-flex; gap: 4px; align-items: center; padding: 6px 2px; }
+.typing-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-gold); animation: bounce 1.2s infinite ease-in-out; }
+.typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-5px); opacity: 1; } }
+
+.empty-state {
+  height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; gap: 14px; padding: 60px 20px; color: var(--text-muted);
+}
+.empty-state .brand-mark { width: 52px; height: 52px; }
+.empty-state h2 { font-size: 22px; color: var(--text-primary); }
+.empty-state p { max-width: 380px; color: var(--text-muted); font-size: 14.5px; }
+
+.chat-input-bar { padding: 16px clamp(16px, 6vw, 120px) 22px; border-top: 1px solid var(--border); background: var(--bg); }
+
+.chat-input-wrap {
+  display: flex; align-items: flex-end; gap: 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 10px 10px 10px 14px;
+  transition: border-color 0.18s var(--ease);
+}
+.chat-input-wrap:focus-within { border-color: var(--accent-gold); }
+
+.chat-input-wrap textarea {
+  flex: 1; background: transparent; border: none; outline: none; resize: none;
+  color: var(--text-primary); font-family: var(--font-body); font-size: 15px;
+  line-height: 1.6; max-height: 160px; padding: 8px 4px;
+}
+.chat-input-wrap textarea::placeholder { color: var(--text-faint); }
+
+.send-btn {
+  width: 40px; height: 40px; border-radius: 50%; background: var(--accent-gold);
+  border: none; color: #1A1206; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: transform 0.15s var(--ease), opacity 0.15s var(--ease);
+}
+.send-btn:hover { transform: scale(1.05); }
+.send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.input-foot { text-align: center; font-size: 11.5px; color: var(--text-faint); margin-top: 10px; }
+
+/* ---------- Modal (settings) ---------- */
+
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(6, 10, 16, 0.65); backdrop-filter: blur(3px);
+  display: none; align-items: center; justify-content: center; z-index: 50; padding: 20px;
+}
+.modal-backdrop.open { display: flex; }
+
+.modal {
+  background: var(--bg-elevated); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg); width: 100%; max-width: 460px; padding: 28px;
+  box-shadow: var(--shadow-lift); max-height: 88vh; overflow-y: auto;
+}
+
+.modal h3 { font-size: 19px; margin-bottom: 4px; }
+.modal .modal-sub { color: var(--text-muted); font-size: 13.5px; display: block; margin-bottom: 22px; }
+
+.modal-actions { display: flex; gap: 10px; margin-top: 22px; }
+.modal-actions .btn { flex: 1; }
+
+select.field-select {
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-primary); font-family: var(--font-body); font-size: 14.5px;
+  padding: 13px 14px; border-radius: var(--radius-sm);
+}
+
+.badge {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 800;
+  padding: 4px 10px; border-radius: 100px; background: var(--accent-teal-soft); color: var(--accent-teal);
+}
+.badge.off { background: var(--accent-danger-soft); color: var(--accent-danger); }
+.badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* ---------- Auth modal (sidebar login/signup) ---------- */
+
+.auth-modal { max-width: 440px; }
+
+.auth-modal-head {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px;
+}
+.auth-modal-head .brand-lockup .brand { font-size: 18px; }
+.auth-modal-head .brand-mark { width: 30px; height: 30px; }
+
+.auth-tabs {
+  display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 4px; margin-bottom: 22px;
+}
+.auth-tab {
+  flex: 1; background: transparent; border: none; color: var(--text-muted);
+  font-family: var(--font-body); font-weight: 800; font-size: 13.5px;
+  padding: 10px; border-radius: 8px; cursor: pointer;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+.auth-tab:hover { color: var(--text-primary); }
+.auth-tab.active { background: var(--accent-gold-soft); color: var(--accent-gold); }
+
+.auth-panel { display: none; }
+.auth-panel.active { display: block; }
+
+/* Small loader for initial boot */
+.boot-loader {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 14px; color: var(--text-muted);
+}
+</style>
+</head>
+<body>
+
+<!-- ========== BOOT LOADER ========== -->
+<div class="view active" id="view-boot">
+  <div class="boot-loader">
+    <svg class="brand-mark" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="8" stroke="#E3A75E" stroke-width="2.5"/>
+      <circle cx="26" cy="26" r="8" stroke="#5FB3A3" stroke-width="2.5"/>
+      <path d="M18.5 18.5L21.5 21.5" stroke="#F3EFE4" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <span>سَنَد...</span>
+  </div>
+</div>
+
+<!-- ========== HOME / CHAT VIEW ========== -->
+<div class="view" id="view-home">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="brand-lockup">
+          <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="8" stroke="#E3A75E" stroke-width="2.5"/>
+            <circle cx="26" cy="26" r="8" stroke="#5FB3A3" stroke-width="2.5"/>
+            <path d="M18.5 18.5L21.5 21.5" stroke="#F3EFE4" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <span class="brand">سَنَد</span>
+        </div>
+      </div>
+
+      <div class="sidebar-item active" id="newChatBtn"><span>＋</span> محادثة جديدة</div>
+      <div class="sidebar-item" id="settingsBtn"><span>⚙️</span> إعدادات النموذج</div>
+
+      <div class="sidebar-section-title">الحالة</div>
+      <div class="sidebar-item" style="cursor: default;">
+        <span class="badge off" id="statusBadge"><span class="badge-dot"></span> غير مُهيّأ</span>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="user-pill" id="userPill" style="display:none;">
+          <div class="user-avatar" id="userAvatar">؟</div>
+          <div class="user-meta">
+            <div class="name" id="userName">—</div>
+            <div class="email" id="userEmail">—</div>
+          </div>
+          <button class="btn-icon" id="logoutBtn" title="تسجيل الخروج">⎋</button>
+        </div>
+        <div class="guest-pill" id="guestPill" style="display:none;">
+          <div class="guest-pill-text">
+            <div class="name">زائر</div>
+            <div class="email">سجّل لحفظ محادثاتك</div>
+          </div>
+          <button type="button" class="btn btn-primary" id="openAuthBtn">تسجيل الدخول</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <main class="chat-main">
+      <div class="chat-topbar">
+        <div style="display:flex; align-items:center;">
+          <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="القائمة">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div>
+            <strong id="topbarTitle">محادثة جديدة</strong>
+            <div class="model-tag" id="topbarModel">لا يوجد نموذج مُهيّأ</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost" id="clearChatBtn">مسح المحادثة</button>
+      </div>
+
+      <div class="chat-scroll" id="chatScroll">
+        <div class="chat-thread"></div>
+        <div class="empty-state" id="emptyState">
+          <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="8" stroke="#E3A75E" stroke-width="2.5"/>
+            <circle cx="26" cy="26" r="8" stroke="#5FB3A3" stroke-width="2.5"/>
+            <path d="M18.5 18.5L21.5 21.5" stroke="#F3EFE4" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <h2>ابدأ محادثتك مع سند</h2>
+          <p>كل رسالة هنا متصلة بسياق المحادثة كاملًا. اكتب سؤالك بالأسفل، أو اضبط مزوّد النموذج من الإعدادات أولًا.</p>
+        </div>
+        <div id="messagesContainer"></div>
+      </div>
+
+      <div class="chat-input-bar">
+        <form id="chatForm">
+          <div class="chat-input-wrap">
+            <textarea id="chatInput" rows="1" placeholder="اكتب رسالتك هنا..."></textarea>
+            <button type="submit" class="send-btn" id="sendBtn" title="إرسال">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12L20 4L13 20L11 13L4 12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </form>
+        <div class="input-foot">سند قد يخطئ أحيانًا. تحقق من المعلومات المهمة.</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Settings modal -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal">
+      <h3>إعدادات نموذج الذكاء الاصطناعي</h3>
+      <span class="modal-sub">سند مربوط افتراضيًا بـ <a href="https://inference.dahl.global/account" target="_blank" rel="noopener">Dahl Inference</a>. تقدر تغيّر المزوّد لأي API متوافق مع OpenAI أو Anthropic. تُحفظ هذه البيانات محليًا في متصفحك فقط.</span>
+
+      <form id="settingsForm">
+        <div class="field">
+          <label for="provider">صيغة الـ API</label>
+          <select class="field-select" id="provider">
+            <option value="openai">متوافق مع OpenAI (Chat Completions)</option>
+            <option value="anthropic">متوافق مع Anthropic (Messages API)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="baseUrl">رابط الـ Endpoint</label>
+          <input type="text" id="baseUrl" placeholder="https://inference.dahl.global/v1/chat/completions">
+          <span class="field-error" id="baseUrlError"></span>
+        </div>
+        <div class="field">
+          <label for="model">اسم النموذج (model)</label>
+          <input type="text" id="model" placeholder="مثال: MiniMaxAI/MiniMax-M2.7">
+          <span class="field-error" id="modelError"></span>
+        </div>
+        <div class="field">
+          <label for="apiKey">مفتاح الـ API</label>
+          <input type="password" id="apiKey" placeholder="sk-...">
+          <span class="field-hint">احصل على مفتاح مجانًا من <a href="https://inference.dahl.global/account" target="_blank" rel="noopener">inference.dahl.global/account</a>. يُخزَّن في localStorage الخاص بمتصفحك فقط ولا يُرسل لأي مكان آخر غير الـ endpoint المحدد.</span>
+          <span class="field-error" id="apiKeyError"></span>
+        </div>
+        <div class="field">
+          <label for="systemPrompt">تعليمات النظام (System Prompt)</label>
+          <input type="text" id="systemPrompt" placeholder="اختياري">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="closeSettingsBtn">إلغاء</button>
+          <button type="submit" class="btn btn-primary">حفظ الإعدادات</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Auth modal (sign in / sign up, opened from the sidebar) -->
+  <div class="modal-backdrop" id="authModal">
+    <div class="modal auth-modal">
+      <div class="auth-modal-head">
+        <div class="brand-lockup">
+          <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="8" stroke="#E3A75E" stroke-width="2.5"/>
+            <circle cx="26" cy="26" r="8" stroke="#5FB3A3" stroke-width="2.5"/>
+            <path d="M18.5 18.5L21.5 21.5" stroke="#F3EFE4" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <span class="brand">سَنَد</span>
+        </div>
+        <button type="button" class="btn-icon" id="closeAuthBtn" title="إغلاق">✕</button>
+      </div>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" id="tabSignin">تسجيل الدخول</button>
+        <button type="button" class="auth-tab" id="tabSignup">حساب جديد</button>
+      </div>
+
+      <!-- Sign in panel -->
+      <div class="auth-panel active" id="panel-signin">
+        <form id="signinForm" novalidate>
+          <div class="field">
+            <label for="si_email">البريد الإلكتروني</label>
+            <input type="email" id="si_email" placeholder="you@example.com" autocomplete="email">
+            <span class="field-error" id="si_emailError"></span>
+          </div>
+          <div class="field">
+            <label for="si_password">كلمة المرور</label>
+            <input type="password" id="si_password" placeholder="كلمة المرور" autocomplete="current-password">
+            <span class="field-error" id="si_passwordError"></span>
+          </div>
+          <label class="checkbox-row" style="margin-bottom: 22px;">
+            <input type="checkbox" id="si_remember" checked> تذكّرني على هذا الجهاز
+          </label>
+          <button type="submit" class="btn btn-primary" id="si_submitBtn">تسجيل الدخول</button>
+        </form>
+        <p class="form-foot" style="margin-top:16px;">ليس لديك حساب؟ <a id="goSignup">أنشئ حسابًا جديدًا</a></p>
+      </div>
+
+      <!-- Sign up panel -->
+      <div class="auth-panel" id="panel-signup">
+        <form id="signupForm" novalidate>
+          <div class="field">
+            <label for="su_name">الاسم الكامل</label>
+            <input type="text" id="su_name" placeholder="مثال: أحمد محمود" autocomplete="name">
+            <span class="field-error" id="su_nameError"></span>
+          </div>
+          <div class="field">
+            <label for="su_email">البريد الإلكتروني</label>
+            <input type="email" id="su_email" placeholder="you@example.com" autocomplete="email">
+            <span class="field-error" id="su_emailError"></span>
+          </div>
+          <div class="field">
+            <label for="su_password">كلمة المرور</label>
+            <input type="password" id="su_password" placeholder="8 أحرف على الأقل" autocomplete="new-password">
+            <span class="field-hint">حرف كبير، رقم، و8 أحرف على الأقل.</span>
+            <span class="field-error" id="su_passwordError"></span>
+          </div>
+          <div class="field">
+            <label for="su_confirm">تأكيد كلمة المرور</label>
+            <input type="password" id="su_confirm" placeholder="أعد كتابة كلمة المرور" autocomplete="new-password">
+            <span class="field-error" id="su_confirmError"></span>
+          </div>
+          <button type="submit" class="btn btn-primary" id="su_submitBtn">إنشاء الحساب</button>
+        </form>
+        <p class="form-foot" style="margin-top:16px;">لديك حساب بالفعل؟ <a id="goSignin">سجّل الدخول</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   سند — كل شيء يخص المنطق هنا. الملف مقسّم لأربع مناطق:
+   1) تخزين محلي (users / session / chat / llm config)
+   2) التنقل بين الشاشات
+   3) نموذج الدخول والتسجيل
+   4) شاشة المحادثة نفسها
+   ========================================================= */
+
+/* ---------------- 1) تخزين محلي ---------------- */
+
+const STORAGE_KEYS = {
+  users: 'sanad_users',
+  session: 'sanad_session',
+  llmConfig: 'sanad_llm_config',
+  chatPrefix: 'sanad_chat_',
+};
+
+function readJSON(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (e) {
+    console.error('sanad: تعذّرت قراءة', key, e);
+    return fallback;
+  }
+}
+function writeJSON(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+async function hashPassword(password) {
+  const bytes = new TextEncoder().encode(password);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+function newUserId() {
+  return 'u_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+}
+
+function getUsers() {
+  return readJSON(STORAGE_KEYS.users, []);
+}
+function findUserByEmail(email) {
+  const normalized = email.trim().toLowerCase();
+  return getUsers().find((u) => u.email === normalized) || null;
+}
+async function createUser({ name, email, password }) {
+  const users = getUsers();
+  const user = {
+    id: newUserId(),
+    name: name.trim(),
+    email: email.trim().toLowerCase(),
+    passwordHash: await hashPassword(password),
+    createdAt: new Date().toISOString(),
+  };
+  users.push(user);
+  writeJSON(STORAGE_KEYS.users, users);
+  return user;
+}
+async function verifyCredentials(email, password) {
+  const user = findUserByEmail(email);
+  if (!user) return null;
+  return (await hashPassword(password)) === user.passwordHash ? user : null;
+}
+
+function setSession(user) {
+  const session = { userId: user.id, name: user.name, email: user.email, loginAt: new Date().toISOString() };
+  writeJSON(STORAGE_KEYS.session, session);
+  return session;
+}
+function getSession() {
+  return readJSON(STORAGE_KEYS.session, null);
+}
+function clearSession() {
+  localStorage.removeItem(STORAGE_KEYS.session);
+}
+
+function chatKey(userId) {
+  return STORAGE_KEYS.chatPrefix + userId;
+}
+function getChatHistory(userId) {
+  return readJSON(chatKey(userId), []);
+}
+function saveChatHistory(userId, messages) {
+  writeJSON(chatKey(userId), messages);
+}
+
+// ملاحظة أمان: كان في السابق مفتاح API حقيقي مكتوب هنا كقيمة افتراضية،
+// وهذا يعني أن أي زائر للصفحة يقدر يقرأه من الكود ويستخدمه على حسابك.
+// تم حذفه — المفتاح الآن يُدخله كل مستخدم بنفسه من شاشة الإعدادات ويُخزَّن
+// في متصفحه فقط، ولا يُشحن مع الكود.
+function getLLMConfig() {
+  return readJSON(STORAGE_KEYS.llmConfig, {
+    provider: 'openai',
+    baseUrl: 'https://inference.dahl.global/v1/chat/completions',
+    apiKey: '',
+    model: 'MiniMaxAI/MiniMax-M2.7',
+    systemPrompt: 'أنت "سند"، مساعد ذكاء اصطناعي ودود ومفيد يجيب باللغة العربية بشكل افتراضي ما لم يطلب المستخدم غير ذلك.',
+  });
+}
+function saveLLMConfig(config) {
+  writeJSON(STORAGE_KEYS.llmConfig, config);
+}
+function isLLMConfigured() {
+  const c = getLLMConfig();
+  return Boolean(c.apiKey && c.baseUrl && c.model);
+}
+
+/* ---------------- 2) التنقل بين الشاشات ---------------- */
+
+function showView(name) {
+  document.querySelectorAll('.view').forEach((v) => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function start() {
+  showView('home');
+  initHomeView();
+}
+
+/* ---------------- 3) نموذج الدخول والتسجيل ---------------- */
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PASSWORD_PATTERN = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
+function bindField(inputId, errorId) {
+  const input = document.getElementById(inputId);
+  const error = document.getElementById(errorId);
+  return {
+    input,
+    error,
+    value: () => input.value.trim(),
+    rawValue: () => input.value,
+    setError(message) {
+      input.classList.toggle('invalid', Boolean(message));
+      error.textContent = message || '';
+    },
+  };
+}
+
+const authModalEl = document.getElementById('authModal');
+const authTabs = { signin: document.getElementById('tabSignin'), signup: document.getElementById('tabSignup') };
+const authPanels = { signin: document.getElementById('panel-signin'), signup: document.getElementById('panel-signup') };
+
+function setAuthTab(name) {
+  for (const key of Object.keys(authTabs)) {
+    authTabs[key].classList.toggle('active', key === name);
+    authPanels[key].classList.toggle('active', key === name);
+  }
+}
+function openAuthModal(tab) {
+  setAuthTab(tab || 'signin');
+  authModalEl.classList.add('open');
+}
+function closeAuthModal() {
+  authModalEl.classList.remove('open');
+}
+
+document.getElementById('openAuthBtn').addEventListener('click', () => {
+  openAuthModal('signin');
+  document.querySelector('.app-shell').classList.remove('sidebar-open');
+});
+document.getElementById('closeAuthBtn').addEventListener('click', closeAuthModal);
+authModalEl.addEventListener('click', (e) => { if (e.target === authModalEl) closeAuthModal(); });
+authTabs.signin.addEventListener('click', () => setAuthTab('signin'));
+authTabs.signup.addEventListener('click', () => setAuthTab('signup'));
+document.getElementById('goSignin').addEventListener('click', () => setAuthTab('signin'));
+document.getElementById('goSignup').addEventListener('click', () => setAuthTab('signup'));
+
+// محادثات الزائر (قبل تسجيل الدخول) تنتقل لحسابه بعد الدخول أو التسجيل،
+// طالما لسه معندوش محادثات محفوظة على حسابه.
+function migrateGuestHistoryIfNeeded(userId) {
+  const guestHistory = getChatHistory('guest');
+  if (guestHistory.length && getChatHistory(userId).length === 0) {
+    saveChatHistory(userId, guestHistory);
+  }
+}
+
+const toastEl = document.getElementById('toast');
+function showToast(message, isDanger) {
+  toastEl.textContent = message;
+  toastEl.classList.toggle('danger', Boolean(isDanger));
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 3200);
+}
+
+// نموذج التسجيل
+(function initSignup() {
+  const form = document.getElementById('signupForm');
+  const submitBtn = document.getElementById('su_submitBtn');
+  const name = bindField('su_name', 'su_nameError');
+  const email = bindField('su_email', 'su_emailError');
+  const password = bindField('su_password', 'su_passwordError');
+  const confirm = bindField('su_confirm', 'su_confirmError');
+
+  function validateName() {
+    if (!name.value()) return name.setError('الاسم مطلوب.'), false;
+    if (name.value().length < 3) return name.setError('الاسم يجب أن يكون 3 أحرف على الأقل.'), false;
+    return name.setError(''), true;
+  }
+  function validateEmail() {
+    if (!email.value()) return email.setError('البريد الإلكتروني مطلوب.'), false;
+    if (!EMAIL_PATTERN.test(email.value())) return email.setError('صيغة البريد الإلكتروني غير صحيحة.'), false;
+    if (findUserByEmail(email.value())) return email.setError('هذا البريد الإلكتروني مسجّل بالفعل.'), false;
+    return email.setError(''), true;
+  }
+  function validatePassword() {
+    if (!password.rawValue()) return password.setError('كلمة المرور مطلوبة.'), false;
+    if (!PASSWORD_PATTERN.test(password.rawValue())) return password.setError('يجب أن تحتوي على حرف ورقم و8 أحرف على الأقل.'), false;
+    return password.setError(''), true;
+  }
+  function validateConfirm() {
+    if (!confirm.rawValue()) return confirm.setError('تأكيد كلمة المرور مطلوب.'), false;
+    if (confirm.rawValue() !== password.rawValue()) return confirm.setError('كلمتا المرور غير متطابقتين.'), false;
+    return confirm.setError(''), true;
+  }
+
+  name.input.addEventListener('blur', validateName);
+  email.input.addEventListener('blur', validateEmail);
+  password.input.addEventListener('blur', validatePassword);
+  confirm.input.addEventListener('blur', validateConfirm);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const allValid = [validateName(), validateEmail(), validatePassword(), validateConfirm()].every(Boolean);
+    if (!allValid) {
+      showToast('من فضلك راجع الحقول المميزة بالأحمر.', true);
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'جارٍ الإنشاء...';
+    try {
+      const user = await createUser({ name: name.rawValue(), email: email.rawValue(), password: password.rawValue() });
+      setSession(user);
+      migrateGuestHistoryIfNeeded(user.id);
+      showToast('تم إنشاء الحساب بنجاح!');
+      form.reset();
+      setTimeout(() => { closeAuthModal(); initHomeView(); }, 300);
+    } catch (err) {
+      console.error(err);
+      showToast('حدث خطأ غير متوقع. حاول مرة أخرى.', true);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'إنشاء الحساب';
+    }
+  });
+})();
+
+// نموذج الدخول
+(function initSignin() {
+  const form = document.getElementById('signinForm');
+  const submitBtn = document.getElementById('si_submitBtn');
+  const email = bindField('si_email', 'si_emailError');
+  const password = bindField('si_password', 'si_passwordError');
+
+  function validateEmail() {
+    if (!email.value()) return email.setError('البريد الإلكتروني مطلوب.'), false;
+    if (!EMAIL_PATTERN.test(email.value())) return email.setError('صيغة البريد الإلكتروني غير صحيحة.'), false;
+    return email.setError(''), true;
+  }
+  function validatePassword() {
+    if (!password.rawValue()) return password.setError('كلمة المرور مطلوبة.'), false;
+    return password.setError(''), true;
+  }
+
+  email.input.addEventListener('blur', validateEmail);
+  password.input.addEventListener('blur', validatePassword);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (![validateEmail(), validatePassword()].every(Boolean)) {
+      showToast('من فضلك راجع الحقول المميزة بالأحمر.', true);
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'جارٍ التحقق...';
+    try {
+      const user = await verifyCredentials(email.rawValue(), password.rawValue());
+      if (!user) {
+        password.setError('البريد الإلكتروني أو كلمة المرور غير صحيحة.');
+        showToast('بيانات الدخول غير صحيحة.', true);
+        return;
+      }
+      setSession(user);
+      migrateGuestHistoryIfNeeded(user.id);
+      showToast('تم تسجيل الدخول بنجاح!');
+      form.reset();
+      setTimeout(() => { closeAuthModal(); initHomeView(); }, 250);
+    } catch (err) {
+      console.error(err);
+      showToast('حدث خطأ غير متوقع. حاول مرة أخرى.', true);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'تسجيل الدخول';
+    }
+  });
+})();
+
+/* ---------------- 4) شاشة المحادثة ---------------- */
+
+let homeInitialized = false;
+let currentSession = null;
+let messages = [];
+let isSending = false;
+
+const PROVIDER_DEFAULTS = {
+  openai: 'https://inference.dahl.global/v1/chat/completions',
+  anthropic: 'https://api.anthropic.com/v1/messages',
+};
+
+const home = {
+  appShell: document.querySelector('.app-shell'),
+  sidebarToggleBtn: document.getElementById('sidebarToggleBtn'),
+  sidebarBackdrop: document.getElementById('sidebarBackdrop'),
+  userName: document.getElementById('userName'),
+  userEmail: document.getElementById('userEmail'),
+  userAvatar: document.getElementById('userAvatar'),
+  userPill: document.getElementById('userPill'),
+  guestPill: document.getElementById('guestPill'),
+  logoutBtn: document.getElementById('logoutBtn'),
+  newChatBtn: document.getElementById('newChatBtn'),
+  clearChatBtn: document.getElementById('clearChatBtn'),
+  statusBadge: document.getElementById('statusBadge'),
+  topbarModel: document.getElementById('topbarModel'),
+  chatScroll: document.getElementById('chatScroll'),
+  messagesContainer: document.getElementById('messagesContainer'),
+  emptyState: document.getElementById('emptyState'),
+  chatForm: document.getElementById('chatForm'),
+  chatInput: document.getElementById('chatInput'),
+  sendBtn: document.getElementById('sendBtn'),
+  settingsBtn: document.getElementById('settingsBtn'),
+  settingsModal: document.getElementById('settingsModal'),
+  settingsForm: document.getElementById('settingsForm'),
+  closeSettingsBtn: document.getElementById('closeSettingsBtn'),
+  provider: document.getElementById('provider'),
+  baseUrl: document.getElementById('baseUrl'),
+  model: document.getElementById('model'),
+  apiKey: document.getElementById('apiKey'),
+  systemPrompt: document.getElementById('systemPrompt'),
+  baseUrlError: document.getElementById('baseUrlError'),
+  modelError: document.getElementById('modelError'),
+  apiKeyError: document.getElementById('apiKeyError'),
+};
+
+function currentUserId() {
+  return currentSession ? currentSession.userId : 'guest';
+}
+
+function initHomeView() {
+  currentSession = getSession(); // null يعني إنه بيتصفح كزائر
+  messages = getChatHistory(currentUserId());
+
+  if (currentSession) {
+    home.userName.textContent = currentSession.name;
+    home.userEmail.textContent = currentSession.email;
+    home.userAvatar.textContent = currentSession.name.trim().charAt(0).toUpperCase();
+    home.userPill.style.display = 'flex';
+    home.guestPill.style.display = 'none';
+  } else {
+    home.userPill.style.display = 'none';
+    home.guestPill.style.display = 'flex';
+  }
+
+  refreshStatus();
+  renderAll();
+  if (!isLLMConfigured()) setTimeout(openSettings, 400);
+
+  if (!homeInitialized) {
+    bindHomeEvents();
+    homeInitialized = true;
+  }
+}
+
+function refreshStatus() {
+  const cfg = getLLMConfig();
+  if (isLLMConfigured()) {
+    home.statusBadge.classList.remove('off');
+    home.statusBadge.innerHTML = '<span class="badge-dot"></span> متصل';
+    home.topbarModel.textContent = `${cfg.provider === 'anthropic' ? 'Anthropic' : 'OpenAI'} · ${cfg.model}`;
+  } else {
+    home.statusBadge.classList.add('off');
+    home.statusBadge.innerHTML = '<span class="badge-dot"></span> غير مُهيّأ';
+    home.topbarModel.textContent = 'لا يوجد نموذج مُهيّأ';
+  }
+}
+
+function openSettings() {
+  const cfg = getLLMConfig();
+  home.provider.value = cfg.provider;
+  home.baseUrl.value = cfg.baseUrl;
+  home.model.value = cfg.model;
+  home.apiKey.value = cfg.apiKey;
+  home.systemPrompt.value = cfg.systemPrompt || '';
+  [home.baseUrlError, home.modelError, home.apiKeyError].forEach((el) => (el.textContent = ''));
+  home.settingsModal.classList.add('open');
+}
+function closeSettings() {
+  home.settingsModal.classList.remove('open');
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function formatContent(text) {
+  return escapeHtml(text).replace(/`([^`]+)`/g, '<code>$1</code>');
+}
+
+function renderAll() {
+  home.messagesContainer.innerHTML = '';
+  home.emptyState.style.display = messages.length ? 'none' : 'flex';
+  messages.forEach((m) => renderMessage(m, { skipScroll: true }));
+  scrollToBottom();
+}
+
+function renderMessage(m, opts = {}) {
+  home.emptyState.style.display = 'none';
+
+  const row = document.createElement('div');
+  row.className = `msg-row ${m.role}`;
+
+  const node = document.createElement('div');
+  node.className = `msg-node ${m.role}`;
+  node.textContent = m.role === 'user' ? (currentSession ? currentSession.name.charAt(0).toUpperCase() : 'ز') : 'س';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = formatContent(m.content);
+
+  const meta = document.createElement('div');
+  meta.className = 'msg-meta';
+  meta.textContent = new Date(m.ts).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+  const bubbleWrap = document.createElement('div');
+  bubbleWrap.appendChild(bubble);
+  bubbleWrap.appendChild(meta);
+
+  row.appendChild(node);
+  row.appendChild(bubbleWrap);
+  home.messagesContainer.appendChild(row);
+
+  if (!opts.skipScroll) scrollToBottom();
+  return row;
+}
+
+function renderTyping() {
+  const row = document.createElement('div');
+  row.className = 'msg-row assistant';
+  row.id = 'typingRow';
+  row.innerHTML = `<div class="msg-node assistant">س</div><div class="msg-bubble"><span class="typing-dots"><span></span><span></span><span></span></span></div>`;
+  home.messagesContainer.appendChild(row);
+  scrollToBottom();
+}
+function removeTyping() {
+  const row = document.getElementById('typingRow');
+  if (row) row.remove();
+}
+function scrollToBottom() {
+  home.chatScroll.scrollTop = home.chatScroll.scrollHeight;
+}
+
+async function callOpenAICompatible(cfg, historyMessages) {
+  const res = await fetch(cfg.baseUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${cfg.apiKey}` },
+    body: JSON.stringify({
+      model: cfg.model,
+      messages: [
+        ...(cfg.systemPrompt ? [{ role: 'system', content: cfg.systemPrompt }] : []),
+        ...historyMessages.map((m) => ({ role: m.role, content: m.content })),
+      ],
+    }),
+  });
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '');
+    throw new Error(`فشل الطلب (${res.status}): ${errText.slice(0, 200)}`);
+  }
+  const data = await res.json();
+  const content = data?.choices?.[0]?.message?.content;
+  if (!content) throw new Error('لم يُرجع النموذج أي محتوى.');
+  return content;
+}
+
+async function callAnthropicCompatible(cfg, historyMessages) {
+  const res = await fetch(cfg.baseUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': cfg.apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: cfg.model,
+      max_tokens: 1500,
+      system: cfg.systemPrompt || undefined,
+      messages: historyMessages.map((m) => ({ role: m.role, content: m.content })),
+    }),
+  });
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '');
+    throw new Error(`فشل الطلب (${res.status}): ${errText.slice(0, 200)}`);
+  }
+  const data = await res.json();
+  const content = data?.content?.map((b) => b.text || '').join('');
+  if (!content) throw new Error('لم يُرجع النموذج أي محتوى.');
+  return content;
+}
+
+function requestCompletion(historyMessages) {
+  const cfg = getLLMConfig();
+  return cfg.provider === 'anthropic'
+    ? callAnthropicCompatible(cfg, historyMessages)
+    : callOpenAICompatible(cfg, historyMessages);
+}
+
+function bindHomeEvents() {
+  const openSidebar = () => home.appShell.classList.add('sidebar-open');
+  const closeSidebar = () => home.appShell.classList.remove('sidebar-open');
+
+  home.sidebarToggleBtn.addEventListener('click', openSidebar);
+  home.sidebarBackdrop.addEventListener('click', closeSidebar);
+
+  home.logoutBtn.addEventListener('click', () => {
+    clearSession();
+    currentSession = null;
+    initHomeView();
+    showToast('تم تسجيل الخروج.');
+    closeSidebar();
+  });
+
+  home.settingsBtn.addEventListener('click', () => { openSettings(); closeSidebar(); });
+  home.closeSettingsBtn.addEventListener('click', closeSettings);
+  home.settingsModal.addEventListener('click', (e) => { if (e.target === home.settingsModal) closeSettings(); });
+
+  home.provider.addEventListener('change', () => {
+    const current = home.baseUrl.value.trim();
+    const isDefault = Object.values(PROVIDER_DEFAULTS).includes(current) || current === '';
+    if (isDefault) home.baseUrl.value = PROVIDER_DEFAULTS[home.provider.value];
+  });
+
+  home.settingsForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let ok = true;
+    if (!home.baseUrl.value.trim()) { home.baseUrlError.textContent = 'رابط الـ endpoint مطلوب.'; ok = false; }
+    else home.baseUrlError.textContent = '';
+    if (!home.model.value.trim()) { home.modelError.textContent = 'اسم النموذج مطلوب.'; ok = false; }
+    else home.modelError.textContent = '';
+    if (!home.apiKey.value.trim()) { home.apiKeyError.textContent = 'مفتاح الـ API مطلوب.'; ok = false; }
+    else home.apiKeyError.textContent = '';
+    if (!ok) return;
+
+    saveLLMConfig({
+      provider: home.provider.value,
+      baseUrl: home.baseUrl.value.trim(),
+      model: home.model.value.trim(),
+      apiKey: home.apiKey.value.trim(),
+      systemPrompt: home.systemPrompt.value.trim(),
+    });
+    refreshStatus();
+    closeSettings();
+    showToast('تم حفظ الإعدادات.');
+  });
+
+  home.chatInput.addEventListener('input', () => {
+    home.chatInput.style.height = 'auto';
+    home.chatInput.style.height = Math.min(home.chatInput.scrollHeight, 160) + 'px';
+  });
+  home.chatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); home.chatForm.requestSubmit(); }
+  });
+
+  home.newChatBtn.addEventListener('click', () => {
+    if (isSending) return;
+    messages = [];
+    saveChatHistory(currentUserId(), messages);
+    renderAll();
+    closeSidebar();
+  });
+  home.clearChatBtn.addEventListener('click', () => {
+    if (isSending) return;
+    messages = [];
+    saveChatHistory(currentUserId(), messages);
+    renderAll();
+    showToast('تم مسح المحادثة.');
+  });
+
+  home.chatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (isSending) return;
+    const text = home.chatInput.value.trim();
+    if (!text) return;
+
+    if (!isLLMConfigured()) {
+      showToast('اضبط إعدادات النموذج أولًا.', true);
+      openSettings();
+      return;
+    }
+
+    const userMsg = { role: 'user', content: text, ts: Date.now() };
+    messages.push(userMsg);
+    saveChatHistory(currentUserId(), messages);
+    renderMessage(userMsg);
+
+    home.chatInput.value = '';
+    home.chatInput.style.height = 'auto';
+    isSending = true;
+    home.sendBtn.disabled = true;
+    renderTyping();
+
+    try {
+      // يُرسَل سياق المحادثة كاملًا مع كل رسالة جديدة.
+      const replyText = await requestCompletion(messages);
+      removeTyping();
+      const assistantMsg = { role: 'assistant', content: replyText, ts: Date.now() };
+      messages.push(assistantMsg);
+      saveChatHistory(currentUserId(), messages);
+      renderMessage(assistantMsg);
+    } catch (err) {
+      console.error(err);
+      removeTyping();
+      showToast(err.message || 'تعذّر الاتصال بالنموذج.', true);
+    } finally {
+      isSending = false;
+      home.sendBtn.disabled = false;
+      home.chatInput.focus();
+    }
+  });
+}
+
+start();
+</script>
+</body>
+</html>
